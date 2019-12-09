@@ -1,0 +1,3 @@
+[submodule "vim-conf"]
+	path = vim-conf/.vim
+	url = https://github.com/Suida/vim
