@@ -1,18 +1,33 @@
 sources:
-	# TODO: sources
+	@echo "[....] Changing source file to tsinghua the mirror one..."
+	mv /etc/apt/sources.list /etc/apt/sources.list.bkp
+	cp modules/sources/tsinghua.apt.sources.list /etc/apt/sources.list
+	apt update
+	@echo [ OK ] Source file changed
 
 git: sources
-	# TODO: git
+	@echo "[....] Installing git..."
+	apt install git
+	@echo [ OK ] Git installed
+
+curl: sources
+	@echo "[....] Installing curl..."
+	apt install curl
+	@echo [ OK ] Curl installed
 
 # Replace the old shell with zsh
 shell: zsh oh-my-zsh proxy
-	# TODO: shell
+	@echo [ OK ] Zsh shell configured
 
 zsh: git
-	# TODO: Zsh
+	@echo "[....] Installing Zsh..."
+	apt install zsh
+	@echo [ OK ] Zsh installed
 
-oh-my-zsh: zsh
-	# TODO: oh-my-zsh
+oh-my-zsh: zsh curl
+	@echo "[....] Installing oh-my-zsh..."
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	@echo [ OK ] oh-my-zsh installed
 
 proxy: oh-my-zsh
 	# TODO: proxy
