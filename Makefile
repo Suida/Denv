@@ -15,6 +15,11 @@ curl: sources
 	apt install curl
 	@echo [ OK ] Curl installed
 
+gzip: sources
+	@echo "[....] Installing gzip..."
+	apt install gzip
+	@echo [ OK ] Gzip installed
+
 # Replace the old shell with zsh
 shell: zsh oh-my-zsh proxy
 	@echo [ OK ] Zsh shell configured
@@ -27,10 +32,23 @@ zsh: git
 oh-my-zsh: zsh curl
 	@echo "[....] Installing oh-my-zsh..."
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	mkdir -p ~/bin
+	echo 'export PATH=~/bin:$PATH' >> ~/.zshrc
 	@echo [ OK ] oh-my-zsh installed
 
-proxy: oh-my-zsh
-	# TODO: proxy
+proxy: oh-my-zsh gzip
+	@echo "[....] Installing proxy"
+	curl -fsSLo clash.gz https://github.com/Dreamacro/clash/releases/download/v0.16.0/clash-linux-amd64-v0.16.0.gz
+	gzip -d clash.gz
+	chmod 755 clash
+	mv clash ~/bin/clash
+	mkdir -p ~/.config/clash
+	cp ./modules/proxy/clash/* ~/bin/.config/clash
+	export http_proxy=http://127.0.0.1:7890
+	export https_proxy=http://127.0.0.1:7890
+	echo "export http_proxy=http://127.0.0.1:7890" >> ~/.zshrc
+	echo "export https_proxy=http://127.0.0.1:7890" >> ~/.zshrc
+	@echo "[....] Proxy installed..."
 
 # Build python environment
 python: pyenv pyenv-virtualenv
