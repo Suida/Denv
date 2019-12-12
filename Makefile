@@ -33,7 +33,7 @@ oh-my-zsh: zsh curl
 	@echo "[....] Installing oh-my-zsh..."
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 	mkdir -p ~/bin
-	echo 'export PATH=~/bin:$PATH' >> ~/.zshrc
+	echo 'export PATH=$$HOME/bin:$$PATH' >> ~/.zshrc
 	@echo [ OK ] oh-my-zsh installed
 
 proxy: oh-my-zsh gzip
@@ -43,7 +43,7 @@ proxy: oh-my-zsh gzip
 	chmod 755 clash
 	mv clash ~/bin/clash
 	mkdir -p ~/.config/clash
-	cp ./modules/proxy/clash/* ~/bin/.config/clash
+	cp ./modules/proxy/clash/* ~/.config/clash
 	export http_proxy=http://127.0.0.1:7890
 	export https_proxy=http://127.0.0.1:7890
 	echo "export http_proxy=http://127.0.0.1:7890" >> ~/.zshrc
