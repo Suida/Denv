@@ -1,0 +1,27 @@
+apt: []
+
+git:
+  - apt
+
+curl:
+  - apt
+
+gzip:
+  - apt
+
+shell:
+  - zsh
+  - oh-my-zsh
+  - proxy
+
+zsh:
+  - apt
+
+oh-my-zsh:
+  - zsh
+  - curl
+
+proxy: []
+
+pyenv:
+  - curl

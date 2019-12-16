@@ -1,0 +1,12 @@
+[package]
+name = "denv"
+version = "0.1.0"
+authors = ["Suida <suidar@foxmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = "~2.33.0"
+serde = "1.0"
+serde_yaml = "0.8"
