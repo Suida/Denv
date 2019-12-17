@@ -1,4 +1,3 @@
-use std::iter::FromIterator;
 use std::collections::HashMap;
 use std::error;
 use std::fmt;
@@ -41,6 +40,14 @@ impl Item {
         self
     }
 }
+
+pub enum TravelMode {
+    Pre,
+    In,
+    Post,
+}
+
+use TravelMode::*;
 
 pub struct ItemGraph {
     items: Vec<Item>,
@@ -138,10 +145,10 @@ impl ItemGraph {
             }
         }
 
-        self._travel(idx, f)
+        self.travel(idx, f, &Post)
     }
 
-    pub fn _travel<F>(&mut self, i: usize, f: &mut F) -> Result<(), CycleGraphError>
+    pub fn travel<F>(&mut self, i: usize, f: &mut F, mode: &TravelMode) -> Result<(), CycleGraphError>
         where F: FnMut(&mut Item)
     {
         let item = &mut self.items[i];
@@ -156,6 +163,10 @@ impl ItemGraph {
 
         item.discovered = true;
 
+        if let Pre = mode {
+            f(&mut self.items[i]);
+        }
+
         let indice: Vec<usize> = self.graph[i]
                                         .iter()
                                         .enumerate()
@@ -164,12 +175,14 @@ impl ItemGraph {
                                         .collect();
 
         for j in indice.iter() {
-            if let Err(e) = self._travel(*j, f) {
+            if let Err(e) = self.travel(*j, f, &mode) {
                 return Err(e);
             }
         }
 
-        f(&mut self.items[i]);
+        if let Post = mode {
+            f(&mut self.items[i]);
+        }
 
         self.items[i].backtraced = true;
 
@@ -177,21 +190,4 @@ impl ItemGraph {
     }
 }
 
-
-pub struct Installer {
-    stack: Vec<String>,
-}
-
-impl Installer {
-    pub fn new(stack: &mut Vec<String>) -> Installer {
-        let stack = Vec::from_iter(stack.iter().map(|s| String::from(s)));
-        Installer {stack}
-    }
-
-    pub fn install(&self) {
-        for item in self.stack.iter() {
-            println!("Installing {}...", item);
-            println!("Installed {}!", item);
-        }
-    }
-}
+pub mod build;
