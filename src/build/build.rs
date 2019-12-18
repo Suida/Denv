@@ -48,3 +48,22 @@ pub fn change_apt_source() -> Result<(), String> {
 
     Ok(())
 }
+
+pub fn shell() -> Result<(), String> {
+    Ok(())
+}
+
+pub fn ohmyzsh() -> Result<(), String> {
+    let output = Command::new("/bin/sh")
+                    .arg("-c \"$(curl -fsSL \
+                        https://raw.githubusercontent.com\
+                        /ohmyzsh/ohmyzsh/master/tools/install.sh)\"")
+                    .output()
+                    .expect("failed");
+    
+    if !output.status.success() {
+        return Err(String::from_utf8_lossy(&output.stderr).to_string())
+    }
+
+    Ok(())
+}

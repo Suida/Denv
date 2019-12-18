@@ -22,7 +22,13 @@ fn main() {
                         .arg(Arg::with_name("item")
                             .help("The item to install")
                             .required(true)
-                            .index(1)))
+                            .index(1))
+                        .arg(Arg::with_name("proxy")
+                            .help("The http proxy to use to download packages")
+                            .long("proxy")
+                            .value_name("PROXY_SERVER")
+                            .required(false)
+                            .takes_value(true)))
                     .subcommand(SubCommand::with_name("debug"))
                     .get_matches();
 
@@ -41,7 +47,7 @@ fn main() {
             if let Some(item_name) = matches.value_of("item") {
                 match graph.travel_from(item_name, &mut |item| items.push(item.name.clone())) {
                     Ok(()) => {
-                        Installer::new(&mut items).install();
+                        Installer::new(&mut items, matches.value_of("proxy")).install();
 
                         graph.update_items(items);
                     }

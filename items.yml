@@ -10,18 +10,17 @@ gzip<apt-install>:
   - apt
 
 shell:
-  - zsh
-  - oh-my-zsh
-  - proxy
+  - zsh<apt-install>
+  - ohmyzsh
 
 zsh<apt-install>:
   - apt
 
-oh-my-zsh:
+ohmyzsh:
   - zsh
   - curl
 
 proxy: []
 
 pyenv:
-  - curl
+  - curl<apt-install>

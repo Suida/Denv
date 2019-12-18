@@ -1,4 +1,5 @@
 use std::iter::FromIterator;
+use std::process::Command;
 
 mod build;
 
@@ -6,12 +7,34 @@ use self::build::*;
 
 pub struct Installer {
     items: Vec<String>,
+    proxy: String,
 }
 
 impl Installer {
-    pub fn new(items: &mut Vec<String>) -> Installer {
+    pub fn new(items: &mut Vec<String>, proxy: Option<&str>) -> Installer {
         let items = Vec::from_iter(items.iter().map(|s| String::from(s)));
-        Installer {items}
+        let proxy = match proxy {
+            Some(s) => s.to_string(),
+            None => "".to_string(),
+        };
+        
+        Installer {items, proxy}
+    }
+
+    pub fn set_proxy_env(&self) {
+        assert!(self.proxy.starts_with("http://"));
+
+        let _output = Command::new("export")
+                        .arg(format!("http_proxy={}", &self.proxy))
+                        .output()
+                        .expect("HTTP proxy set failed.");
+
+        let _output = Command::new("export")
+                        .arg(format!("https_proxy={}", &self.proxy))
+                        .output()
+                        .expect("HTTP proxy set failed.");
+
+        println!("Using proxy server: {}", &self.proxy);
     }
 
     pub fn install(&self) {
