@@ -1,8 +1,12 @@
+use std::fs::OpenOptions;
 use std::collections::HashMap;
 use std::error;
 use std::fmt;
+use std::io::Write;
 
 use serde_yaml;
+
+pub mod build;
 
 #[derive(Debug, Clone)]
 pub struct CycleGraphError;
@@ -52,6 +56,8 @@ use TravelMode::*;
 pub struct ItemGraph {
     items: Vec<Item>,
     graph: Vec<Vec<bool>>,
+
+    pub yaml_file_path: Option<String>,
 }
 
 impl ItemGraph {
@@ -70,27 +76,25 @@ impl ItemGraph {
             graph[i] = line;
         }
 
-        Some(ItemGraph {items, graph})
+        Some(ItemGraph {items, graph, yaml_file_path: None})
     }
 
     pub fn from_hashmap(map: &HashMap<String, Vec<String>>) -> Option<ItemGraph> {
         // Collect all keys of the map
-        let items: Vec<Item> = map.iter()
+        let mut items: Vec<Item> = map.iter()
+                                    .filter(|(x, _)| *x != "installed" )
                                     .map(|(x, _)| {Item::new(x)})
                                     .collect();
+        items.push(Item::new("installed"));
         let len = items.len();  // Cache the length
 
         // Initialize 2-dimensional vector
         let mut graph: Vec<Vec<bool>> = Vec::with_capacity(len);
-        for i in 0..len {
-            let mut line = Vec::with_capacity(len);
-
-            for _ in 0..len {
-                line.push(false);
-            }
+        for item in items.iter() {
+            let mut line = vec![false; len+1];
 
             // This will always be true
-            if let Some(vec) = map.get(&items[i].name) {
+            if let Some(vec) = map.get(&item.name) {
                 for each in vec.iter() {
                     if let Some(idx) = items.iter().position(|item| item.name == *each) {
                         line[idx] = true;
@@ -101,7 +105,7 @@ impl ItemGraph {
             graph.push(line);
         }
 
-        Some(ItemGraph {items, graph})
+        Some(ItemGraph {items, graph, yaml_file_path: None})
     }
 
     pub fn from_yaml(s: &str) -> Option<ItemGraph> {
@@ -119,7 +123,10 @@ impl ItemGraph {
             let result: Result<HashMap<String, Vec<String>>, serde_yaml::Error> = serde_yaml::from_reader(f);
 
             if let Ok(map) = result {
-                return ItemGraph::from_hashmap(&map);
+                if let Some(mut ret) = ItemGraph::from_hashmap(&map) {
+                    ret.yaml_file_path = Some(s.to_string());
+                    return Some(ret)
+                }
             }
         }
         
@@ -153,11 +160,12 @@ impl ItemGraph {
     {
         let item = &mut self.items[i];
 
-        if item.backtraced == true {
+        // If backtraced or has been installed
+        if item.backtraced || self.graph.last().unwrap()[i] {
             return Ok(());
         }
 
-        if item.discovered == true {
+        if item.discovered {
             return Err(CycleGraphError);
         }
 
@@ -188,6 +196,63 @@ impl ItemGraph {
 
         Ok(())
     }
-}
 
-pub mod build;
+    pub fn set_as_installed(&mut self, item_name: &str) -> &mut Self {
+        let idx = self.items.iter().position(|x| x.name == item_name ).unwrap();
+        self.graph[self.items.len() - 1][idx] = true;
+        self
+    }
+
+    pub fn to_hash_map(&self) -> HashMap<String, Vec<String>> {
+        let mut map = HashMap::new();
+
+        for i in 0..self.items.len() {
+            map.insert(
+                self.items[i].name.to_string(),
+                self.graph[i].iter()
+                                .enumerate()
+                                .filter(|(_, x)| **x )
+                                .map(|(i, _)| self.items[i].name.to_string() )
+                                .collect()
+            );
+        }
+
+        map
+    }
+
+    pub fn to_yaml(&self) {
+        if let Some(s) = &self.yaml_file_path {
+            match OpenOptions::new().create(true).write(true).open(s) {
+                Ok(mut file) => {
+                    match serde_yaml::to_string(&self.to_hash_map()) {
+                        Ok(s) => {
+                            file.write_all(s.as_bytes()).unwrap();
+                        },
+                        Err(e) => println!("Permenent failed: {}", e),
+                    }
+                }
+                Err(e) => println!("{}", e),
+            }
+        }
+    }
+
+    pub fn update_items(&mut self, item_names: Vec<String>) -> &mut Self {
+        for item_name in item_names.iter() {
+            self.set_as_installed(&item_name);
+        }
+
+        self.to_yaml();
+        self
+    }
+
+    pub fn installed(&self) {
+        println!("{:?}", self.graph.last()
+                                    .unwrap()
+                                    .iter()
+                                    .enumerate()
+                                    .filter(|(_, v)| **v )
+                                    .map(|(i, _)| self.items[i].name.to_string())
+                                    .collect::<Vec<String>>()
+        )
+    }
+}

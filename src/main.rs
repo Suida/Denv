@@ -1,11 +1,16 @@
-use std::process::Command;
 use std::io::{self, Write};
+use std::path::Path;
+use std::process::Command;
 
 extern crate clap;
 use clap::{Arg, App, SubCommand};
 
 use denv::{ItemGraph, Item};
 use denv::build::Installer;
+
+const ITEMS_YAML: &'static str = "items.yml";
+
+const RECORDS_YAML: &'static str = "records.yml" ;
 
 fn main() {
     let matches = App::new("Denv")
@@ -22,13 +27,23 @@ fn main() {
                     .get_matches();
 
     if let Some(matches) = matches.subcommand_matches("install") {
-        if let Some(mut graph) = ItemGraph::from_yaml_file("items.yml") {
+        let yaml_path = if Path::new(RECORDS_YAML).exists() {
+            RECORDS_YAML
+        } else {
+            ITEMS_YAML
+        };
+
+        if let Some(mut graph) = ItemGraph::from_yaml_file(yaml_path) {
+            graph.yaml_file_path = Some("records.yml".to_string());
+
             let mut items: Vec<String> = Vec::new();
+
             if let Some(item_name) = matches.value_of("item") {
                 match graph.travel_from(item_name, &mut |item: &mut Item| items.push(item.name.clone())) {
                     Ok(()) => {
-                        let installer = Installer::new(&mut items);
-                        installer.install();
+                        Installer::new(&mut items).install();
+
+                        graph.update_items(items);
                     }
                     _ => println!("Wrong config file!"),
                 }
