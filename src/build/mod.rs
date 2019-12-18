@@ -19,9 +19,8 @@ impl Installer {
             println!("Installing {}...", item);
 
             let output = match item.as_str() {
-                "apt" => apt(),
-                "git" => git(),
-                "curl" => curl(),
+                "apt" => change_apt_source(),
+                s if s.ends_with("<apt-install>") => apt_install(s),
                 _ => Ok(()),
             };
 

@@ -5,7 +5,7 @@ use std::process::Command;
 extern crate clap;
 use clap::{Arg, App, SubCommand};
 
-use denv::{ItemGraph, Item};
+use denv::ItemGraph;
 use denv::build::Installer;
 
 const ITEMS_YAML: &'static str = "items.yml";
@@ -39,7 +39,7 @@ fn main() {
             let mut items: Vec<String> = Vec::new();
 
             if let Some(item_name) = matches.value_of("item") {
-                match graph.travel_from(item_name, &mut |item: &mut Item| items.push(item.name.clone())) {
+                match graph.travel_from(item_name, &mut |item| items.push(item.name.clone())) {
                     Ok(()) => {
                         Installer::new(&mut items).install();
 

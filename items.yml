@@ -1,12 +1,12 @@
 apt: []
 
-git:
+git<apt-install>:
   - apt
 
-curl:
+curl<apt-install>:
   - apt
 
-gzip:
+gzip<apt-install>:
   - apt
 
 shell:
@@ -14,7 +14,7 @@ shell:
   - oh-my-zsh
   - proxy
 
-zsh:
+zsh<apt-install>:
   - apt
 
 oh-my-zsh:
