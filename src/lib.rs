@@ -216,6 +216,7 @@ impl ItemGraph {
             }
         }
 
+        // If not found
         if idx < 0 {
             println!("\"{}\" not found", s);
             return Ok(())
@@ -226,7 +227,12 @@ impl ItemGraph {
 
     /// Travel the graph with style specified by `mode` from the No.`i` item in
     /// `self.items` and deal each item with function `f`.
-    pub fn travel<F>(&mut self, i: usize, f: &mut F, mode: &TravelMode) -> Result<(), CycleGraphError>
+    pub fn travel<F>(
+        &mut self,
+        i: usize,
+        f: &mut F,
+        mode: &TravelMode
+    ) -> Result<(), CycleGraphError>
         where F: FnMut(&mut Item)
     {
         let item = &mut self.items[i];

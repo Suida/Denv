@@ -46,6 +46,7 @@ impl Installer {
                 "ohmyzsh" => ohmyzsh(),
                 "shell" => shell(&self.proxy),
                 "pyenv" => pyenv(),
+                "rust-lang" => rustlang(),
                 s if s.ends_with("<apt-install>") => apt_install(s),
                 _ => Ok(()),
             };

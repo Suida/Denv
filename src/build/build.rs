@@ -119,3 +119,27 @@ pub fn pyenv() -> Result<(), String> {
 
     Ok(())
 }
+
+pub fn rustlang() -> Result<(), String> {
+    let output = Command::new("curl")
+                    .arg("--proto '=https")
+                    .arg("--tlsv1.2")
+                    .arg("-sSf https://sh.rustup.rs")
+                    .output()
+                    .expect("Failed to download rustup.");
+
+    if !output.status.success() {
+        return Err(String::from_utf8(output.stderr).expect("Failed to download rustup."))
+    }
+
+    let mut cmd = Command::new("sh");
+    cmd.arg(&String::from_utf8(output.stdout).expect("Decode rustup script failed."));
+
+    let status = cmd.status().expect("Ohmyzsh downloading failed.");
+    
+    if !status.success() {
+        return Err("Ohmyzsh downloading failed.".to_string())
+    }
+
+    Ok(())
+}
