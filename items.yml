@@ -24,3 +24,71 @@ proxy: []
 
 pyenv:
   - curl<apt-install>
+  - git<apt-install>
+  - make<apt-install>
+  - build-essential<apt-install>
+  - libssl-dev<apt-install>
+  - zlib1g-dev<apt-install>
+  - libbz2-dev<apt-install>
+  - libreadline-dev<apt-install>
+  - libsqlite3-dev<apt-install>
+  - wget<apt-install>
+  - llvm<apt-install>
+  - libncurses5-dev<apt-install>
+  - xz-utils<apt-install>
+  - tk-dev<apt-install>
+  - libxml2-dev<apt-install>
+  - libxmlsec1-dev<apt-install>
+  - libffi-dev<apt-install>
+  
+make<apt-install>:
+  - apt
+
+build-essential<apt-install>:
+  - apt
+  
+libssl-dev<apt-install>:
+  - apt
+  
+zlib1g-dev<apt-install>:
+  - apt
+  
+libbz2-dev<apt-install>:
+  - apt
+  
+libreadline-dev<apt-install>:
+  - apt
+  
+libsqlite3-dev<apt-install>:
+  - apt
+  
+wget<apt-install>:
+  - apt
+  
+curl<apt-install>:
+  - apt
+  
+llvm<apt-install>:
+  - apt
+  
+libncurses5-dev<apt-install>:
+  - apt
+  
+xz-utils<apt-install>:
+  - apt
+  
+tk-dev<apt-install>:
+  - apt
+  
+libxml2-dev<apt-install>:
+  - apt
+  
+libxmlsec1-dev<apt-install>:
+  - apt
+  
+libffi-dev<apt-install>:
+  - apt
+  
+liblzma-dev<apt-install>:
+  - apt
+  

@@ -207,16 +207,21 @@ impl ItemGraph {
     pub fn travel_from<F>(&mut self, s: &str, f: &mut F) -> Result<(), CycleGraphError>
         where F: FnMut(&mut Item)
     {
-        let mut idx = 0;
+        let mut idx = -1;
 
         for (i, item) in self.items.iter_mut().enumerate() {
             item.clean();
             if item.name == s {
-                idx = i;
+                idx = i as i64;
             }
         }
 
-        self.travel(idx, f, &Post)
+        if idx < 0 {
+            println!("\"{}\" not found", s);
+            return Ok(())
+        }
+
+        self.travel(idx as usize, f, &Post)
     }
 
     /// Travel the graph with style specified by `mode` from the No.`i` item in

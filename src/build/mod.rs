@@ -43,6 +43,9 @@ impl Installer {
 
             let output = match item.as_str() {
                 "apt" => change_apt_source(),
+                "ohmyzsh" => ohmyzsh(),
+                "shell" => shell(&self.proxy),
+                "pyenv" => pyenv(),
                 s if s.ends_with("<apt-install>") => apt_install(s),
                 _ => Ok(()),
             };
