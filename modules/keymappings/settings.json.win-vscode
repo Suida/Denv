@@ -1,0 +1,60 @@
+{
+    "window.zoomLevel": 0,
+    "editor.fontSize": 14,
+    "editor.fontFamily": "'Fira code',  Consolas, 'Courier New', monospace",
+    "editor.fontLigatures": true,
+    "explorer.confirmDelete": false,
+    "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe",
+    "terminal.integrated.env.windows": {"CMDER_ROOT": "G:\\python\\cmder\\"},
+    "terminal.integrated.shellArgs.windows": [
+        "/K G:\\python\\cmder\\vendor\\init.bat",
+    ],
+    "breadcrumbs.enabled": true,
+    "workbench.iconTheme": "vscode-great-icons",
+    "C_Cpp.updateChannel": "Insiders",
+    "python.dataScience.sendSelectionToInteractiveWindow": true,
+    "remote.SSH.showLoginTerminal": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/venv": true,
+        "**/target/debug": true,
+        "**/target/doc": true,
+        "**/target/release": true,
+        "**/target/rls": true,
+    },
+    "kite.showWelcomeNotificationOnStartup": false,
+
+    "vim.disableExtension": false,
+    "vim.leader": "<Space>",
+    "vim.handleKeys": {
+        "<Tab>": false,
+    },
+    "vim.insertModeKeyBindingsNonRecursive": [
+        {
+            "before": ["j", "k"],
+            "after": ["<Esc>"],
+        },
+        {
+            "before": ["<C-l>"],
+            "after": [" ", " ", " ", " "],
+        },
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": ["<C-j>"],
+            "after": ["1", "5", "j"],
+        },
+        {
+            "before": ["<C-k>"],
+            "after": ["1", "5", "k"],
+        },
+    ],
+    "workbench.colorTheme": "Andromeda Italic",
+    "maven.executable.path": "D:\\JavaHome\\apache-maven-3.6.3\\bin",
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
+}
