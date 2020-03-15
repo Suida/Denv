@@ -5,6 +5,7 @@
     "editor.fontLigatures": true,
     "explorer.confirmDelete": false,
     "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe",
+    // Path should be changed on specific PC
     "terminal.integrated.env.windows": {"CMDER_ROOT": "G:\\python\\cmder\\"},
     "terminal.integrated.shellArgs.windows": [
         "/K G:\\python\\cmder\\vendor\\init.bat",
@@ -38,6 +39,7 @@
             "before": ["j", "k"],
             "after": ["<Esc>"],
         },
+        // Tab may work unexpectedly, use <C-L> as alternative
         {
             "before": ["<C-l>"],
             "after": [" ", " ", " ", " "],
@@ -54,6 +56,7 @@
         },
     ],
     "workbench.colorTheme": "Andromeda Italic",
+    // Path should be changed on specific PC
     "maven.executable.path": "D:\\JavaHome\\apache-maven-3.6.3\\bin",
     "editor.suggestSelection": "first",
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"

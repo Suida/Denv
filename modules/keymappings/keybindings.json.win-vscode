@@ -3,7 +3,11 @@
     // Terminal related
     {
         "key": "alt+backspace",
-        "command": "workbench.action.terminal.toggleTerminal",
+        "command": "workbench.action.terminal.toggleTerminal"
+    },
+    {
+        "key": "shift+backspace",
+        "command": "workbench.action.toggleSidebarVisibility"
     },
     {
         "key": "ctrl+tab",
@@ -51,7 +55,13 @@
         "when": "terminalFocus"
     },
     {
-        "key": "shift+backspace",
-        "command": "workbench.action.toggleSidebarVisibility",
+        "key": "ctrl+7",
+        "command": "workbench.action.terminal.focusAtIndex7",
+        "when": "terminalFocus"
     },
+    {
+        "key": "ctrl+8",
+        "command": "workbench.action.terminal.focusAtIndex8",
+        "when": "terminalFocus"
+    }
 ]
