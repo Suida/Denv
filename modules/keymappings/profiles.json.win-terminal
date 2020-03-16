@@ -66,6 +66,50 @@
             "command": "closeTab"
         },
         {
+            "keys": ["ctrl+shift+-"],
+            "command": "splitHorizontal"
+        },
+        {
+            "keys": ["ctrl+shift+|"],
+            "command": "splitVertical"
+        },
+        {
+            "keys": ["ctrl+shift+w"],
+            "command": "closePane"
+        },
+        {
+            "keys": ["ctrl+shift+k"],
+            "command": "moveFocusUp"
+        },
+        {
+            "keys": ["ctrl+shift+j"],
+            "command": "moveFocusDown"
+        },
+        {
+            "keys": ["ctrl+shift+h"],
+            "command": "moveFocusLeft"
+        },
+        {
+            "keys": ["ctrl+shift+l"],
+            "command": "moveFocusRight"
+        },
+        {
+            "keys": ["ctrl+shift+i"],
+            "command": "resizePaneUp"
+        },
+        {
+            "keys": ["ctrl+shift+u"],
+            "command": "resizePaneDown"
+        },
+        {
+            "keys": ["ctrl+shift+y"],
+            "command": "resizePaneLeft"
+        },
+        {
+            "keys": ["ctrl+shift+o"],
+            "command": "resizePaneRight"
+        },
+        {
             "keys": ["alt+left"],
             "command": "resizePaneLeft"
         },
